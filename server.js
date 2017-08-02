@@ -19,7 +19,7 @@ app.use(express.static('/public'));
 //   console.log(`Magic is happening on ${process.env.PORT}`)
 // });
 
-LOCAL CONNECTION 
+// LOCAL CONNECTION 
 
 app.listen(port, function(err) {  
  if (err) {
@@ -29,8 +29,8 @@ app.listen(port, function(err) {
 });
 
 
-//Connect to Mongo // CHANGE MONGO DB URL!!!!
-mongoose.connect('mongodb://heroku_qgcjr9k0:dk9hse1csiu0l52rljicap4vsc@ds153392.mlab.com:53392/heroku_qgcjr9k0', function(error){
+//Connect to Mongo // UPDATE MONGO DB URL!!!!
+mongoose.connect('', function(error){
 	if (error) console.error(error);
 	else console.log('mongo connected');
 
