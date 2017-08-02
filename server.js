@@ -30,7 +30,7 @@ app.listen(port, function(err) {
 
 
 //Connect to Mongo // UPDATE MONGO DB URL!!!!
-mongoose.connect('', function(error){
+mongoose.connect('mongodb://heroku_hs5cd2fl:dlco8ms4jgmcr2goptk0siqu3b@ds145245.mlab.com:45245/heroku_hs5cd2fl', function(error){
 	if (error) console.error(error);
 	else console.log('mongo connected');
 
@@ -44,5 +44,68 @@ Schema = new mongoose.Schema({
     },{ collection: 'stories' });
 
 var textStories = mongoose.model('stories', Schema);
+
+
+
+
+
+
+
+//STORIES
+
+//get the stories
+
+app.get('/stories', function(request, response){  
+	textStories.find(function(err,stories){
+		if(err){
+			console.log('error with textStories find')
+		}else{
+			response.send(stories);
+		}
+		
+	})
+
+
+  
+	console.log('stories were sent');
+});
+
+//post new storie
+
+app.post('/new-storie', function(request, response){
+
+	console.log("posted to new-storie");
+	console.log(request.body);
+
+
+	//add request to directors collection
+	storie = new textStories(request.body);
+
+
+	storie.save(function(err){
+		if(err){
+        	response.send({"ERROR":"something went wrong"});
+	    }else{
+	       	response.send(storie);
+	    }
+
+	})
+
+})
+
+
+
+//edit storie
+
+//delete storie
+
+
+
+
+
+
+
+
+
 
 
