@@ -1,0 +1,13 @@
+{
+  "name": "loyno-cc-app",
+  "version": "1.0.0",
+  "description": "loyola class final project",
+  "main": "server.js",
+  "author": "Andres, Gabe, Rob, Vicky",
+  "dependencies": {
+    "JSONStream": "^1.3.1",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.0.8"
+  }
+}
