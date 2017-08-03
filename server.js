@@ -21,7 +21,8 @@ app.use(express.static('/public'));
 
 // LOCAL CONNECTION 
 
-app.listen(process.env.PORT || 5000, function(err) {  
+//process.env.PORT || 5000
+app.listen(port, function(err) {  
  if (err) {
    return console.log('something bad happened', err)
  }
@@ -29,8 +30,10 @@ app.listen(process.env.PORT || 5000, function(err) {
 });
 
 
+// process.env.MONGODB_URI
+
 //Connect to Mongo // UPDATE MONGO DB URL!!!!
-mongoose.connect(process.env.MONGODB_URI, function(error){
+mongoose.connect("", function(error){
 	if (error) console.error(error);
 	else console.log('mongo connected');
 
@@ -51,7 +54,8 @@ var textStories = mongoose.model('stories', Schema);
 Schema = new mongoose.Schema({
 	start     : String,
 	end       : String,
-	details   : String 
+	details   : String,
+	available   : Boolean
     },{ collection: 'courses' });
 
 var textCourses = mongoose.model('courses', Schema);
