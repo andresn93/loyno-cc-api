@@ -47,6 +47,27 @@ var textStories = mongoose.model('stories', Schema);
 
 
 
+//MongoDB schema for TEXT STORIES 
+Schema = new mongoose.Schema({
+	start     : String,
+	end       : String,
+	details   : String 
+    },{ collection: 'courses' });
+
+var textCourses = mongoose.model('courses', Schema);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -204,10 +225,165 @@ app.post('/edit-story', function(request, response){
 
 });
 
+//STORIES API END
+
+
+//NEXT COURSES API
+
+
+
+//get the courses
+
+app.get('/courses', function(request, response){  
+	textCourses.find(function(err,courses){
+		if(err){
+			console.log('error with textCourses find')
+		}else{
+			response.send(courses);
+		}
+		
+	})
+
+
+  
+	console.log('courses were sent');
+});
+
+//post new course
+
+app.post('/new-course', function(request, response){
+
+	console.log("posted to new-course");
+	console.log(request.body);
+
+
+	
+	course = new textCourse(request.body);
+
+
+	course.save(function(err){
+		if(err){
+        	response.send({"ERROR":"something went wrong"});
+	    }else{
+	       	response.send(course);
+	    }
+
+	})
+
+})
 
 
 
 
+//delete course
+
+app.post('/delete-course', function(request, response){
+
+	if(request.body){
+		console.log("posted to delete");
+		// console.log(request.body);
+		console.log(request.body);
+
+		
+		courseDelId = request.body._id;
+		console.log(courseDelId)
+		
+		
+		textCourses.findOne({_id: courseDelId}, function(err,course){
+			if(err){
+				console.log('error with delete-course find')
+			}else{
+				 
+				if(course.name != null){
+					console.log(course);			
+
+					course.remove(function(err){
+						if(err){
+							console.log(" error")
+						}
+						console.log("removed");
+						response.send("deleted");
+					});
+				}
+				
+			}
+			
+		});
+	}
+});
+
+
+//get specific course
+
+app.post('/this-course', function(request, response){
+
+	console.log("posted to this-course");
+	console.log(request.body);
+
+
+	nameCourse = request.body.name;
+	console.log(nameCourse);
+
+	
+	textCourse.findOne({name: nameCourse},function(err,course){
+		if(err){
+			console.log('error with this-course find')
+		}else{
+			thisCourse = course;
+			console.log(thisCourse);
+			response.send(thisCourse);
+		}
+		
+	})
+})
+
+//edit course
+
+app.post('/edit-story', function(request, response){
+
+	console.log("request.body comes next:");
+	console.log(request.body);
+
+	editedCourse = request.body;
+
+	console.log("var editedCourse comes next:");
+	console.log(editedCourse);
+
+	textCourse.findOne({_id: editedCourse._id}, function(err,course){
+		if(err){
+			console.log('error with edit-course find')
+		}else{
+			 
+			 console.log("course found");
+			 console.log(course);
+
+			course.start = editedCourse.start
+			course.end = editedCourse.end 
+			course.details = editedCourse.details
+			
+			console.log("course edited");
+			console.log(course);
+
+			course.save(function(err){
+				if(err){
+		        	response.send({"ERROR":"something went wrong"});
+			    }else{
+			    	console.log("not error")
+			       	response.send(course);
+			    }
+			    
+			})	
+
+
+			
+		}
+		
+	});
+
+
+});
+
+//COURSES API END
 
 
 
