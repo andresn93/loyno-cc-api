@@ -30,7 +30,7 @@ app.listen(port, function(err) {
 
 
 //Connect to Mongo // UPDATE MONGO DB URL!!!!
-mongoose.connect('mongodb://heroku_hs5cd2fl:dlco8ms4jgmcr2goptk0siqu3b@ds145245.mlab.com:45245/heroku_hs5cd2fl', function(error){
+mongoose.connect(process.env.MONGODB_URI, function(error){
 	if (error) console.error(error);
 	else console.log('mongo connected');
 
