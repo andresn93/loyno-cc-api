@@ -70,23 +70,23 @@ app.get('/stories', function(request, response){
 	console.log('stories were sent');
 });
 
-//post new storie
+//post new story
 
-app.post('/new-storie', function(request, response){
+app.post('/new-story', function(request, response){
 
-	console.log("posted to new-storie");
+	console.log("posted to new-story");
 	console.log(request.body);
 
 
-	//add request to directors collection
-	storie = new textStories(request.body);
+	
+	story = new textStories(request.body);
 
 
-	storie.save(function(err){
+	story.save(function(err){
 		if(err){
         	response.send({"ERROR":"something went wrong"});
 	    }else{
-	       	response.send(storie);
+	       	response.send(story);
 	    }
 
 	})
@@ -95,10 +95,114 @@ app.post('/new-storie', function(request, response){
 
 
 
-//edit storie
 
-//delete storie
+//delete story
 
+app.post('/delete-story', function(request, response){
+
+	if(request.body){
+		console.log("posted to delete");
+		// console.log(request.body);
+		console.log(request.body);
+
+		
+		storyDelId = request.body._id;
+		console.log(storyDelId)
+		
+		
+		textStories.findOne({_id: storyDelId}, function(err,story){
+			if(err){
+				console.log('error with delete-story find')
+			}else{
+				 
+				if(story.name != null){
+					console.log(story);			
+
+					story.remove(function(err){
+						if(err){
+							console.log(" error")
+						}
+						console.log("removed");
+						response.send("deleted");
+					});
+				}
+				
+			}
+			
+		});
+	}
+});
+
+
+//get specific story
+
+app.post('/this-story', function(request, response){
+
+	console.log("posted to this-story");
+	console.log(request.body);
+
+
+	nameStory = request.body.name;
+	console.log(nameStory);
+
+	
+	textStories.findOne({name: nameStory},function(err,story){
+		if(err){
+			console.log('error with this-story find')
+		}else{
+			thisStory = story;
+			console.log(thisStory);
+			response.send(thisStory);
+		}
+		
+	})
+})
+
+//edit story
+
+app.post('/edit-story', function(request, response){
+
+	console.log("request.body comes next:");
+	console.log(request.body);
+
+	editedStory = request.body;
+
+	console.log("var editedStory comes next:");
+	console.log(editedStory);
+
+	textStories.findOne({_id: editedStory._id}, function(err,story){
+		if(err){
+			console.log('error with edit-fstory find')
+		}else{
+			 
+			 console.log("story found");
+			 console.log(story);
+
+			story.name = editedStory.name
+			story.picture = editedStory.picture 
+			story.description = editedStory.description
+			
+			console.log("story edited");
+			console.log(story);
+
+			story.save(function(err){
+				if(err){
+		        	response.send({"ERROR":"something went wrong"});
+			    }else{
+			    	console.log("not error")
+			       	response.send(story);
+			    }
+			    
+			})	
+
+
+			
+		}
+		
+	});
+
+
+});
 
 
 
