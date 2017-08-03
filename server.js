@@ -21,7 +21,7 @@ app.use(express.static('/public'));
 
 // LOCAL CONNECTION 
 
-app.listen(port, function(err) {  
+app.listen(process.env.PORT || 5000, function(err) {  
  if (err) {
    return console.log('something bad happened', err)
  }
