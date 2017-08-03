@@ -339,7 +339,7 @@ app.post('/this-course', function(request, response){
 
 //edit course
 
-app.post('/edit-story', function(request, response){
+app.post('/edit-course', function(request, response){
 
 	console.log("request.body comes next:");
 	console.log(request.body);
