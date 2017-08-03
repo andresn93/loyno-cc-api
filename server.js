@@ -321,11 +321,11 @@ app.post('/this-course', function(request, response){
 	console.log(request.body);
 
 
-	nameCourse = request.body.name;
-	console.log(nameCourse);
+	startCourse = request.body.start;
+	console.log(startCourse);
 
 	
-	textCourses.findOne({name: nameCourse},function(err,course){
+	textCourses.findOne({start: startCourse},function(err,course){
 		if(err){
 			console.log('error with this-course find')
 		}else{
