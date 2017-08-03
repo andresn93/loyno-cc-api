@@ -258,7 +258,7 @@ app.post('/new-course', function(request, response){
 
 
 	
-	course = new textCourse(request.body);
+	course = new textCourses(request.body);
 
 
 	course.save(function(err){
@@ -325,7 +325,7 @@ app.post('/this-course', function(request, response){
 	console.log(nameCourse);
 
 	
-	textCourse.findOne({name: nameCourse},function(err,course){
+	textCourses.findOne({name: nameCourse},function(err,course){
 		if(err){
 			console.log('error with this-course find')
 		}else{
@@ -349,7 +349,7 @@ app.post('/edit-story', function(request, response){
 	console.log("var editedCourse comes next:");
 	console.log(editedCourse);
 
-	textCourse.findOne({_id: editedCourse._id}, function(err,course){
+	textCourses.findOne({_id: editedCourse._id}, function(err,course){
 		if(err){
 			console.log('error with edit-course find')
 		}else{
