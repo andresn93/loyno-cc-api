@@ -385,6 +385,23 @@ app.post('/edit-course', function(request, response){
 
 //COURSES API END
 
+//APPLICATION ALOWED API
+
+//get the courses
+
+app.get('/application-allowed', function(request, response){  
+	
+	var alowed = false;
+		
+	if(1 == 1){
+		alowed =true
+	}
+
+	response.send(allowed);
+
+	})
+
+
 
 
 
