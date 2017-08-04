@@ -21,13 +21,17 @@ app.use(express.static('/public'));
 
 // LOCAL CONNECTION 
 
-app.listen(port, function(err) {  
+// port
+//process.env.PORT || 5000
+app.listen(process.env.PORT || 5000, function(err) {  
  if (err) {
    return console.log('something bad happened', err)
  }
  console.log(`Magic is happening on ${port}`)
 });
 
+
+// process.env.MONGODB_URI
 
 //Connect to Mongo // UPDATE MONGO DB URL!!!!
 mongoose.connect(process.env.MONGODB_URI, function(error){
@@ -51,22 +55,11 @@ var textStories = mongoose.model('stories', Schema);
 Schema = new mongoose.Schema({
 	start     : String,
 	end       : String,
-	details   : String 
+	details   : String,
+	available   : Boolean
     },{ collection: 'courses' });
 
 var textCourses = mongoose.model('courses', Schema);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -360,6 +353,8 @@ app.post('/edit-course', function(request, response){
 			course.start = editedCourse.start
 			course.end = editedCourse.end 
 			course.details = editedCourse.details
+			course.available = editedCourse.available
+
 			
 			console.log("course edited");
 			console.log(course);
@@ -384,6 +379,38 @@ app.post('/edit-course', function(request, response){
 });
 
 //COURSES API END
+
+
+
+//APPLICATION-ALOWED API
+
+
+app.get('/application-allowed', function(request, response){  
+	
+	var allowed = false;
+
+
+	textCourses.find({available: true}, function(err,courseList){
+		if(err){
+			console.log('error with available find')
+		}else{
+			console.log(courseList);
+			if(courseList.length > 0){
+				allowed = true;
+			}
+		}
+				 
+		
+	// if(1 == 1){
+	// 	allowed =true
+	// }
+
+	response.send(allowed);
+
+	})
+
+});
+
 
 
 
