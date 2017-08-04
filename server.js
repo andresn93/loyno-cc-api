@@ -23,6 +23,11 @@ app.use(express.static('/public'));
 
 //process.env.PORT || 5000
 app.listen(port, function(err) {  
+
+// port
+//process.env.PORT || 5000
+app.listen(process.env.PORT || 5000, function(err) {  
+
  if (err) {
    return console.log('something bad happened', err)
  }
@@ -59,18 +64,6 @@ Schema = new mongoose.Schema({
     },{ collection: 'courses' });
 
 var textCourses = mongoose.model('courses', Schema);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -364,6 +357,8 @@ app.post('/edit-course', function(request, response){
 			course.start = editedCourse.start
 			course.end = editedCourse.end 
 			course.details = editedCourse.details
+			course.available = editedCourse.available
+
 			
 			console.log("course edited");
 			console.log(course);
@@ -404,6 +399,38 @@ app.get('/application-allowed', function(request, response){
 	response.send(allowed);
 
 	})
+
+
+
+
+//APPLICATION-ALOWED API
+
+
+app.get('/application-allowed', function(request, response){  
+	
+	var allowed = false;
+
+
+	textCourses.find({available: true}, function(err,courseList){
+		if(err){
+			console.log('error with available find')
+		}else{
+			console.log(courseList);
+			if(courseList.length > 0){
+				allowed = true;
+			}
+		}
+				 
+		
+	// if(1 == 1){
+	// 	allowed =true
+	// }
+
+	response.send(allowed);
+
+	})
+
+});
 
 
 
