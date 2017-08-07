@@ -61,6 +61,30 @@ Schema = new mongoose.Schema({
 
 var textCourses = mongoose.model('courses', Schema);
 
+//MongoDB schema for subscription
+Schema = new mongoose.Schema({
+	name    : String,
+	email       : String,
+	howHear   : String,
+	whyInterest   : String
+    },{ collection: 'subscriptions' });
+
+var textSubscriptions = mongoose.model('subscriptions', Schema);
+
+
+
+//MongoDB schema for application
+Schema = new mongoose.Schema({
+	name    : String,
+	email       : String,
+	phone       : Number,
+	howHear   : String,
+	about   : String
+    },{ collection: 'applications' });
+
+var textApplications = mongoose.model('applications', Schema);
+
+
 
 
 
@@ -410,6 +434,337 @@ app.get('/application-allowed', function(request, response){
 	})
 
 });
+
+//APPLICATION-ALOWED API
+
+
+
+//NEXT SUBSCRIPTION API
+
+
+
+//get the subscription
+
+app.get('/subscriptions', function(request, response){  
+	textSubscriptions.find(function(err,subscriptions){
+		if(err){
+			console.log('error with textSubscriptions find')
+		}else{
+			response.send(subscriptions);
+		}
+		
+	})
+
+
+  
+	console.log('subscriptions were sent');
+});
+
+//post new subscription
+
+app.post('/new-subscription', function(request, response){
+
+	console.log("posted to new-subscription");
+	console.log(request.body);
+
+
+	
+	subscription = new textSubscriptions(request.body);
+
+
+	subscription.save(function(err){
+		if(err){
+        	response.send({"ERROR":"something went wrong"});
+	    }else{
+	       	response.send(subscription);
+	    }
+
+	})
+
+})
+
+
+
+
+//delete subscription
+
+app.post('/delete-subscription', function(request, response){
+
+	if(request.body){
+		console.log("posted to delete");
+		// console.log(request.body);
+		console.log(request.body);
+
+		
+		subscriptionDelId = request.body._id;
+		console.log(subscriptionDelId)
+		
+		
+		textSubscriptions.findOne({_id: subscriptionDelId}, function(err,subscription){
+			if(err){
+				console.log('error with delete-subscription find')
+			}else{
+				 
+				if(subscription.name != null){
+					console.log(subscription);			
+
+					subscription.remove(function(err){
+						if(err){
+							console.log(" error")
+						}
+						console.log("removed");
+						response.send("deleted");
+					});
+				}
+				
+			}
+			
+		});
+	}
+});
+
+
+//get specific subscription
+
+app.post('/this-subscription', function(request, response){
+
+	console.log("posted to this-subscription");
+	console.log(request.body);
+
+
+	emailSubscription = request.body.email;
+	console.log(emailSubscription);
+
+	
+	textSubscriptions.findOne({email: emailSubscription},function(err,subscription){
+		if(err){
+			console.log('error with this-subscription find')
+		}else{
+			thisSubscription = subscription;
+			console.log(thisSubscription);
+			response.send(thisSubscription);
+		}
+		
+	})
+})
+
+//edit subscription
+
+app.post('/edit-subscription', function(request, response){
+
+	console.log("request.body comes next:");
+	console.log(request.body);
+
+	editedSubscription = request.body;
+
+	console.log("var editedSubscription comes next:");
+	console.log(editedSubscription);
+
+	textSubscriptions.findOne({_id: editedSubscription._id}, function(err,subscription){
+		if(err){
+			console.log('error with edit-subscription find')
+		}else{
+			 
+			 console.log("subscription found");
+			 console.log(subscription);
+
+			
+			
+			subscription.name        = editedSubscription.name
+			subscription.email       = editedSubscription.email   
+			subscription.howHear     = editedSubscription.howHear
+			subscription.whyInterest = editedSubscription.whyInterest
+
+			
+			console.log("subscription edited");
+			console.log(subscription);
+
+			subscription.save(function(err){
+				if(err){
+		        	response.send({"ERROR":"something went wrong"});
+			    }else{
+			    	console.log("not error")
+			       	response.send(subscription);
+			    }
+			    
+			})	
+
+
+			
+		}
+		
+	});
+
+
+});
+
+//SUBSCRIPTION API END
+
+
+//NEXT APPLICATION API
+
+
+
+//get the application
+
+app.get('/applications', function(request, response){  
+	textApplications.find(function(err,applications){
+		if(err){
+			console.log('error with textApplications find')
+		}else{
+			response.send(applications);
+		}
+		
+	})
+
+
+  
+	console.log('applications were sent');
+});
+
+//post new subscription
+
+app.post('/new-application', function(request, response){
+
+	console.log("posted to new-application");
+	console.log(request.body);
+
+
+	
+	application = new textApplications(request.body);
+
+
+	application.save(function(err){
+		if(err){
+        	response.send({"ERROR":"something went wrong"});
+	    }else{
+	       	response.send(application);
+	    }
+
+	})
+
+})
+
+
+
+
+//delete subscription
+
+app.post('/delete-application', function(request, response){
+
+	if(request.body){
+		console.log("posted to delete");
+		// console.log(request.body);
+		console.log(request.body);
+
+		
+		applicationDelId = request.body._id;
+		console.log(applicationDelId)
+		
+		
+		textApplications.findOne({_id: applicationDelId}, function(err,application){
+			if(err){
+				console.log('error with delete-application find')
+			}else{
+				 
+				if(application.name != null){
+					console.log(application);			
+
+					application.remove(function(err){
+						if(err){
+							console.log(" error")
+						}
+						console.log("removed");
+						response.send("deleted");
+					});
+				}
+				
+			}
+			
+		});
+	}
+});
+
+
+//get specific subscription
+
+app.post('/this-application', function(request, response){
+
+	console.log("posted to this-application");
+	console.log(request.body);
+
+
+	emailApplication = request.body.email;
+	console.log(emailApplication);
+
+	
+	textApplications.findOne({email: emailApplication},function(err,application){
+		if(err){
+			console.log('error with this-application find')
+		}else{
+			thisApplication = subscription;
+			console.log(thisSubscription);
+			response.send(thisApplication);
+		}
+		
+	})
+})
+
+//edit subscription
+
+app.post('/edit-application', function(request, response){
+
+	console.log("request.body comes next:");
+	console.log(request.body);
+
+	editedApplication = request.body;
+
+	console.log("var editedApplication comes next:");
+	console.log(editedApplication);
+
+	textApplications.findOne({_id: editedApplication._id}, function(err,application){
+		if(err){
+			console.log('error with edit-application find')
+		}else{
+			 
+			 console.log("application found");
+			 console.log(application);
+
+			
+			
+			application.name    = editedApplication.name
+			application.email   = editedApplication.email 
+			application.phone   = editedApplication.phone  
+			application.howHear = editedApplication.howHear
+			application.about   = editedApplication.about
+
+			
+			console.log("application edited");
+			console.log(application);
+
+			application.save(function(err){
+				if(err){
+		        	response.send({"ERROR":"something went wrong"});
+			    }else{
+			    	console.log("not error")
+			       	response.send(application);
+			    }
+			    
+			})	
+
+
+			
+		}
+		
+	});
+
+
+});
+
+//SUBSCRIPTION API END
+
+
+
 
 
 
