@@ -331,40 +331,7 @@ app.post('/delete-course', function(request, response){
 });
 
 
-app.post('/delete-story', function(request, response){
 
-	if(request.body){
-		console.log("posted to delete");
-		// console.log(request.body);
-		console.log(request.body);
-
-		
-		storyDelId = request.body._id;
-		console.log(storyDelId)
-		
-		
-		textStories.findOne({_id: storyDelId}, function(err,story){
-			if(err){
-				console.log('error with delete-story find')
-			}else{
-				 
-				if(story.name != null){
-					console.log(story);			
-
-					story.remove(function(err){
-						if(err){
-							console.log(" error")
-						}
-						console.log("removed");
-						response.send("deleted");
-					});
-				}
-				
-			}
-			
-		});
-	}
-});
 
 
 //get specific course
