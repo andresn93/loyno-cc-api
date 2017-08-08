@@ -23,7 +23,7 @@ app.use(express.static('/public'));
 
 // port
 //process.env.PORT || 5000
-app.listen(process.env.PORT || 5000, function(err) {  
+app.listen(port, function(err) {  
  if (err) {
    return console.log('something bad happened', err)
  }
@@ -34,7 +34,7 @@ app.listen(process.env.PORT || 5000, function(err) {
 // process.env.MONGODB_URI
 
 //Connect to Mongo // UPDATE MONGO DB URL!!!!
-mongoose.connect(process.env.MONGODB_URI, function(error){
+mongoose.connect("mongodb://heroku_hs5cd2fl:dlco8ms4jgmcr2goptk0siqu3b@ds145245.mlab.com:45245/heroku_hs5cd2fl", function(error){
 	if (error) console.error(error);
 	else console.log('mongo connected');
 
@@ -51,7 +51,7 @@ var textStories = mongoose.model('stories', Schema);
 
 
 
-//MongoDB schema for TEXT STORIES 
+//MongoDB schema for TEXT COURSES 
 Schema = new mongoose.Schema({
 	start     : String,
 	end       : String,
@@ -311,10 +311,47 @@ app.post('/delete-course', function(request, response){
 				console.log('error with delete-course find')
 			}else{
 				 
-				if(course.name != null){
-					console.log(course);			
+				 console.log(course);
+				if(course.details != null){
+					console.log(course);	
 
 					course.remove(function(err){
+						if(err){
+							console.log(" error")
+						}
+						console.log("removed");
+						response.send("deleted");
+					});
+				}
+				
+			}
+			
+		});
+	}
+});
+
+
+app.post('/delete-story', function(request, response){
+
+	if(request.body){
+		console.log("posted to delete");
+		// console.log(request.body);
+		console.log(request.body);
+
+		
+		storyDelId = request.body._id;
+		console.log(storyDelId)
+		
+		
+		textStories.findOne({_id: storyDelId}, function(err,story){
+			if(err){
+				console.log('error with delete-story find')
+			}else{
+				 
+				if(story.name != null){
+					console.log(story);			
+
+					story.remove(function(err){
 						if(err){
 							console.log(" error")
 						}
